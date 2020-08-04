@@ -21,15 +21,71 @@ int main (int argc, char *argv[])
         ALPHA = strtod(argv[1], &eptr);
     }
 
+    /* Load matrix A and initialize */
+    input = fopen("./input/A.matrix", "r");
+    size_t len = 0;
+    char *line = NULL;
+    ssize_t read = getline(&line, &len, input);
+
+    /** Get size of A matrix **/
+    int rows, cols;
+    int i = 0;
+    char *tok;
+    for (tok = strtok(line, ";"); tok && *tok; tok = strtok(NULL, ";\n")) {
+      if (i == 0) {
+        rows = atoi(tok);
+        printf("ROWS: %d\n", rows);
+      } else if (i == 1) {
+        cols = atoi(tok);
+        printf("COLS: %d\n", cols);
+      }
+      i++;
+    }
+    
+    double A[rows][cols];
+
+    /** Load values from A.matrix to A **/
+   
+    int row = 0;
+    while ( (read = getline(&line, &len, input)) != -1 ) {
+      i = 0;
+      for (tok = strtok(line, ";"); tok && *tok; tok = strtok(NULL, ";\n")) {
+        char *eptr;
+        A[row][i] = strtod(tok, &eptr);
+        i++;
+      }
+      row++;
+    }
+	
+    fclose(input);
+
+    /* Load matrix B and initialize */
+    input = fopen("./input/B.matrix", "r");
+
+    double b[cols];
+    
+    /** Load values from b.matrix to b **/
+    row = 0;
+    while ( (read = getline(&line, &len, input)) != -1 ) {
+      for (tok = strtok(line, ";"); tok && *tok; tok = strtok(NULL, ";\n")) {
+        char *eptr;
+        b[row] = strtod(tok, &eptr);
+      }
+      row++;
+    }
+	
+    fclose(input);
+
     omp_set_num_threads(NUM_THREADS);
 
-    double A[2][3] = {{1, 2, 3},{1, 1, 0}};
-    double b[] = {4, 2};
+    // intialize x (solution) and the dual variables (as initial guesses)
+    double x[cols];
+    double y[cols];
+    for (int i = 0; i < cols; i++) {
+      x[i] = 0;
+      y[i] = 0;
+    }
 
-    // initiall guess for dual variables
-    double y[] = {1, 1};
-
-    double x[] = {0,0,0};
     start = omp_get_wtime();
     for (int i = 0; i < N_ITER; i++) {
 
