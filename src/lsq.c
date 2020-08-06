@@ -149,7 +149,7 @@ int main(int argc, char *argv[]) {
         printf("Optimal objective: %.4e\n", objval);
         end = omp_get_wtime();
         printf("Time to complete: %.10f\n\n", end - start);
-        printf("  x1=%.4f, x2=%.4f, x3=%.4f, x4=%.4f, x5=%.4f, x6=%.4f, x7=%.4f, x8=%.4f, x9=%.4f, x10=%.4f\n", sol[0], sol[1], sol[2], sol[3], sol[4], sol[5], sol[6], sol[7], sol[8], sol[9] );
+        printf("  x1=%.4f, x2=%.4f, x3=%.4f, x4=%.4f, x5=%.4f, x6=%.4f, x7=%.4f, x8=%.4f, x9=%.4f, x10=%.4f, x11=%.4f\n", sol[0], sol[1], sol[2], sol[3], sol[4], sol[5], sol[6], sol[7], sol[8], sol[9], sol[10] );
     } else if (optimstatus == GRB_INF_OR_UNBD) {
         printf("Model is infeasible or unbounded\n");
     } else {

@@ -16,8 +16,8 @@ int main(int argc, char *argv[]) {
     FILE *input, *output;
     output = fopen("./output/ascent_lsq.csv", "wb+");
     double start, end;
-    double N_ITER = 300;
-    double ALPHA = 0.1;
+    double N_ITER = 100;
+    double ALPHA = 0.2;
 
     /* Load matrix A and initialize */
     input = fopen("./input/A.matrix", "r");
@@ -80,10 +80,12 @@ int main(int argc, char *argv[]) {
 
     // intialize x (solution) and the dual variables (as initial guesses)
     double x[cols];
-    double y[cols];
+    double y[rows];
     for (int i = 0; i < cols; i++) {
       x[i] = 0;
-      y[i] = 0.5;
+    }
+    for (int i = 0; i < rows; i++) {
+      y[i] = 0;
     }
   
 
@@ -173,7 +175,7 @@ int main(int argc, char *argv[]) {
         }
         
         printf("  x1=%.4f, x2=%.4f, x3=%.4f, x4=%.4f, x5=%.4f, x6=%.4f, x7=%.4f, x8=%.4f, x9=%.4f, x10=%.4f\n", x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9] );
-
+        fprintf(output, "%d, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f\n", i, x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7], x[8], x[9]);
         /* Update y */
         double ax;
         for (int j = 0; j < rows; j++) {
